@@ -105,7 +105,7 @@
       };
 
 //CONFIGURING CHART THREE - a bar chart showing days to ship
-          var chartThree = {
+      var chartThree = {
         chart: {
           renderTo: 'chart-three-container',
           type: 'bar'
@@ -179,8 +179,15 @@
           gDaysToShip.sort(compareSecondColumn)
 
 
-        }).done (function() {       //need 'done' in order to start the drawing only after data processing is done
+        }).done (function() {       //need 'done' in order to start the drawing only after data processing is done            
+            // First, get the device names in alphabetical order with "Other" at the end
+            alphabetizedDevices = gDeviceTypes
+            alphabetizedDevices.splice(alphabetizedDevices.indexOf("Other"), 1)
+            alphabetizedDevices.sort()
+            alphabetizedDevices.push("Other")
+
             // CHART #1
+
             var chartOne = {
               chart: {
                 renderTo: 'chart-one-container',
@@ -209,13 +216,12 @@
           for (i = 0; i < gNumSold.length; i++) {
             chartOneData = {
               data: gNumSold[i],
-              name: gDeviceTypes[i]
+              name: gDeviceTypes[i],
+              legendIndex:alphabetizedDevices.indexOf(gDeviceTypes[i])
             }
             chartOne.series.push(chartOneData);
           }
           new Highcharts.Chart('chart-one-container', chartOne);
-
-
 
           // CHART #3
           var chartThreeData = {
