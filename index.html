@@ -129,6 +129,7 @@
           gNumSold = [];          // Chart #1
           gPercentReturned = [];  // Chart #2
           gDaysToShip = [];       // Chart #3
+
           var lines = data.split('\n').slice(1);
           var deviceCount = 9
           var totalCount = 0
@@ -147,13 +148,13 @@
                 kReturnedOnAverage = 4;
                 var items = line.split(",");
             if (lineNo < deviceCount) {
-              gDaysToShip.push([items[kProductType], Number(items[kAvgDaysToShip])]);  //we need to sort days from high to low (or vice versa, depending on how Highcharts will plot them)
+              gDaysToShip.push([items[kProductType], parseInt(items[kAvgDaysToShip])]);  //we need to sort days from high to low (or vice versa, depending on how Highcharts will plot them)
               gDeviceTypes.push(items[kProductType]);
             }
-            gNumSold[lineNo%deviceCount].push([items[kYear], Number(items[kNumSold])]);
+            gNumSold[lineNo%deviceCount].push([items[kYear], parseInt(items[kNumSold])]);
 
 
-            gPercentReturned.push([items[kProductType], items[kYear], Number(items[kReturnedOnAverage])])
+            gPercentReturned.push([items[kProductType], items[kYear], parseInt(items[kReturnedOnAverage])])
             totalCount += parseFloat(items[kNumSold])
             totalReturned += parseFloat(items[kNumSold]) * parseFloat(items[kReturnedOnAverage])
             if ((lineNo + 1) % deviceCount == 0) {
@@ -163,6 +164,21 @@
             }
             options.xAxis.categories.push(items[0]);
           });
+
+          // Sort the days to ship from lower to highest
+          // Credit to StackOverflow for this code
+          // http://stackoverflow.com/a/16097058/1031615
+          function compareSecondColumn(a, b) {
+            if (a[1] === b[1]) {
+                return 0;
+            }
+            else {
+                return (a[1] < b[1]) ? -1 : 1;
+            }
+          }
+          gDaysToShip.sort(compareSecondColumn)
+
+
         }).done (function() {       //need 'done' in order to start the drawing only after data processing is done
             // CHART #1
             var chartOne = {
