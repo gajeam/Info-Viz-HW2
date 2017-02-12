@@ -189,14 +189,13 @@
             alphabetizedDevices.push("Other")
 
             // CHART #1
-
             var chartOne = {
               chart: {
                 renderTo: 'chart-one-container',
                 type: 'line',
               },
               title: {
-                text: "Annual Sales Per Device",
+                text: "Annual Sales Per Year and Device",
               },
               xAxis: {
                 name: "Year",
@@ -224,6 +223,53 @@
             chartOne.series.push(chartOneData);
           }
           new Highcharts.Chart('chart-one-container', chartOne);
+
+
+          // CHART #2
+
+          // Add the "Average" line in
+          alphabetizedDevices.push("Average")
+
+          var chartTwo = {
+            chart: {
+              renderTo: 'chart-two-container',
+              type: 'line',
+            },
+            title: {
+              text: "Percent of Devices Returned Per Year and Device",
+            },
+            xAxis: {
+              name: "Year",
+              // This left aligns the line on the x-axis
+              labels: {
+                  formatter: function() {
+                      return gYears[this.value];
+                  }
+              },
+            },
+            yAxis: {
+              title: {
+                text: "Percent Devices Returned",
+              },
+              labels: {
+                formatter: function() {
+                    return this.value + "%";
+                }
+              },
+            },
+            series: [],
+          };
+
+          for (i = 0; i < alphabetizedDevices.length; i++) {
+            chartTwoData = {
+              data: gPercentReturned[i],
+              name: gDeviceTypes[i],
+              legendIndex:alphabetizedDevices.indexOf(gDeviceTypes[i])
+            }
+            chartTwo.series.push(chartTwoData);
+          }
+          new Highcharts.Chart('chart-two-container', chartTwo);
+
 
           // CHART #3
           var chartThreeData = {
