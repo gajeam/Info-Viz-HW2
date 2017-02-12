@@ -137,7 +137,10 @@
 
           for (i = 0; i < deviceCount; i++) {
             gNumSold.push([])
+            gPercentReturned.push([])
           }
+          // Add one more to percent returned for the average
+          gPercentReturned.push([])
 
 
           $.each(lines, function(lineNo, line) {
@@ -152,13 +155,12 @@
               gDeviceTypes.push(items[kProductType]);
             }
             gNumSold[lineNo%deviceCount].push([items[kYear], parseInt(items[kNumSold])]);
+            gPercentReturned[(lineNo + 1)%deviceCount].push([items[kYear], parseInt(items[kReturnedOnAverage])])
 
-
-            gPercentReturned.push([items[kProductType], items[kYear], parseInt(items[kReturnedOnAverage])])
             totalCount += parseFloat(items[kNumSold])
             totalReturned += parseFloat(items[kNumSold]) * parseFloat(items[kReturnedOnAverage])
             if ((lineNo + 1) % deviceCount == 0) {
-              gPercentReturned.push(["Average", items[kYear], Math.round(totalReturned/totalCount)]);
+              gPercentReturned[deviceCount].push([items[kYear], Math.round(totalReturned/totalCount)]);
               totalCount = 0;
               totalReturned = 0;
             }
