@@ -20,9 +20,9 @@
     <div id="wrapper">
       <h1>Smart Devices</h1>
       <p>by Gabe Nicholas and Natalia Timakova</p>
-      <div id = "chart-one-container"></div>
-      <div id = "chart-two-container"></div>
-      <div id = "chart-three-container"></div>
+      <div class = "chart" id = "chart-one-container"></div>
+      <div class = "chart" id = "chart-two-container"></div>
+      <div class = "chart" id = "chart-three-container"></div>
     </div>
 
       <script type="text/javascript">
@@ -69,8 +69,8 @@
             labels: {
               style: {
                 color: "#333333",
-                fontFamily: "Helvetica,Arial,sans-serif"
-              }
+                fontFamily: "Helvetica,Arial,sans-serif",
+              },
             },
           },
           yAxis: {
@@ -91,10 +91,10 @@
                 color: "#333333",
                 fontFamily: "Helvetica,Arial,sans-serif"
               },
-              text: "Days"
             }
           }
-        })
+        });
+
 
 // I though we need options to hold the product types in the xAxes across all three charts
       var options = {
@@ -113,12 +113,19 @@
         title: {
           text: "Shipping Time"
         },
+        yAxis: {
+          title: {
+            text: "Days",
+          },
+        },
         series: [] // This series data is pulled through a for loop that loops through the CSV.
       };
 
 
         $.get("_data/smartdevices.csv", function (data) {
-          // Let's load the data!
+          gDeviceTypes = [];
+          gYears = ["2013", "2014", "2015", "2016"];
+
           gNumSold = [];          // Chart #1
           gPercentReturned = [];  // Chart #2
           gDaysToShip = [];       // Chart #3
@@ -126,6 +133,12 @@
           var deviceCount = 9
           var totalCount = 0
           var totalReturned = 0
+
+          for (i = 0; i < deviceCount; i++) {
+            gNumSold.push([])
+          }
+
+
           $.each(lines, function(lineNo, line) {
                 kProductType = 0;
                 kNumSold = 1;
@@ -135,23 +148,61 @@
                 var items = line.split(",");
             if (lineNo < deviceCount) {
               gDaysToShip.push([items[kProductType], Number(items[kAvgDaysToShip])]);  //we need to sort days from high to low (or vice versa, depending on how Highcharts will plot them)
+              gDeviceTypes.push(items[kProductType]);
             }
-            gNumSold.push([items[kProductType], items[kYear], Number(items[kNumSold])]);
-            window.gPercentReturned.push([items[kProductType], items[kYear], Number(items[kReturnedOnAverage])])
+            gNumSold[lineNo%deviceCount].push([items[kYear], Number(items[kNumSold])]);
+
+
+            gPercentReturned.push([items[kProductType], items[kYear], Number(items[kReturnedOnAverage])])
             totalCount += parseFloat(items[kNumSold])
             totalReturned += parseFloat(items[kNumSold]) * parseFloat(items[kReturnedOnAverage])
             if ((lineNo + 1) % deviceCount == 0) {
-              window.gPercentReturned.push(["Average", items[kYear], Math.round(totalReturned/totalCount)]);
+              gPercentReturned.push(["Average", items[kYear], Math.round(totalReturned/totalCount)]);
               totalCount = 0;
               totalReturned = 0;
             }
             options.xAxis.categories.push(items[0]);
           });
-          console.log(gPercentReturned)
         }).done (function() {       //need 'done' in order to start the drawing only after data processing is done
+            // CHART #1
+            var chartOne = {
+              chart: {
+                renderTo: 'chart-one-container',
+                type: 'line',
+              },
+              title: {
+                text: "Annual Sales Per Device",
+              },
+              xAxis: {
+                name: "Year",
+                // This left aligns the line on the x-axis
+                labels: {
+                    formatter: function() {
+                        return gYears[this.value];
+                    }
+                },
+              },
+              yAxis: {
+                title: {
+                  text: "Devices Sold",
+                },
+              },
+              series: [],
+            };
 
-            
-            var chartThreeData = {
+          for (i = 0; i < gNumSold.length; i++) {
+            chartOneData = {
+              data: gNumSold[i],
+              name: gDeviceTypes[i]
+            }
+            chartOne.series.push(chartOneData);
+          }
+          new Highcharts.Chart('chart-one-container', chartOne);
+
+
+
+          // CHART #3
+          var chartThreeData = {
            // name: 'shipping time',
             data: gDaysToShip,
             color: "#1F77B4",
@@ -165,12 +216,12 @@
           chartThree = jQuery.extend(true, {}, options, chartThree);
           
           new Highcharts.Chart('chart-three-container', chartThree);
- 
-
 
         })
 
       });
+
+
 
       </script>
 
