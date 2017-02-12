@@ -4,54 +4,140 @@
       <meta charset="UTF-8" />
       <title>Smart Devices</title>
 
-      <!-- Remember to edit the CSS so that your result looks similar
-      to expectedresult.png -->
+      <!-- Remember to edit the CSS -->
       <link rel="stylesheet" href="_css/main.css">
 
-      <script src="_js/jquery-1.11.0.min.js"></script>
+<!--       <script src="_js/jquery-1.11.0.min.js"></script> THESE LIBRARIES DIDN'T WORK FOR ME
       <script src="_js/highcharts.js"></script>
+ -->      
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   </head>
 
   <body>
 
     <div id="wrapper">
       <h1>Smart Devices</h1>
-      <p>Gabe Nicholas and Natalia Timakova</p>
+      <p>by Gabe Nicholas and Natalia Timakova</p>
       <div id = "chart-one-container"></div>
       <div id = "chart-two-container"></div>
       <div id = "chart-three-container"></div>
-
+    </div>
 
       <script type="text/javascript">
-        $.get("_data/smartdevices.csv", function (data) {
 
+    // Here we are declaring a function using Highcharts.setOptions
+    // This configures global options that will apply for both charts.
+    // These options work like a style theme.
+    // http://www.highcharts.com/docs/getting-started/how-to-set-options#2
+      $(function () {
+        Highcharts.setOptions({
+          chart: {
+            style: {
+              fontFamily: "Helvetica,Arial,sans-serif"
+            }
+          },
+          // legend: {
+          //   borderRadius: 0,
+          //   itemStyle: {
+          //     color: "#000000",
+          //     fontFamily: "Helvetica,Arial,sans-serif"
+          //   }
+          // },
+          title: {
+            style: {
+              color: "#000000",
+              fontFamily: "Helvetica,Arial,sans-serif",
+              fontSize: "14px",
+              fontWeight: "bold"
+            }
+          },
+          tooltip: {
+            borderRadius: 3,
+            borderWidth: 1,
+            shadow: true,
+
+            style: {
+              color: "#333333",
+              fontFamily: "Arial, sans-serif",
+              fontSize: "14px",
+              padding: "10px"
+            }
+          },
+          xAxis: {
+            labels: {
+              style: {
+                color: "#333333",
+                fontFamily: "Helvetica,Arial,sans-serif"
+              }
+            },
+          },
+          yAxis: {
+            labels: {
+              style: {
+                color: "#333333",
+                fontFamily: "Helvetica,Arial,sans-serif"
+              }
+            },
+            min: 0,
+            plotLines: [{
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }],
+            title: {
+              style: {
+                color: "#333333",
+                fontFamily: "Helvetica,Arial,sans-serif"
+              },
+              text: "Days"
+            }
+          }
+        })
+
+// I though we need options to hold the product types in the xAxes across all three charts
+      var options = {
+        xAxis: {
+          categories: []
+        }
+        
+      };
+
+//CONFIGURING CHART THREE - a bar chart showing days to ship
+          var chartThree = {
+        chart: {
+          renderTo: 'chart-three-container',
+          type: 'bar'
+        },
+        title: {
+          text: "Shipping Time"
+        },
+        series: [] // This series data is pulled through a for loop that loops through the CSV.
+      };
+
+
+        $.get("_data/smartdevices.csv", function (data) {
           // Let's load the data!
           gNumSold = [];          // Chart #1
           gPercentReturned = [];  // Chart #2
           gDaysToShip = [];       // Chart #3
-
           var lines = data.split('\n').slice(1);
           var deviceCount = 9
-
           var totalCount = 0
           var totalReturned = 0
-
           $.each(lines, function(lineNo, line) {
                 kProductType = 0;
                 kNumSold = 1;
                 kYear = 2;
                 kAvgDaysToShip = 3;
                 kReturnedOnAverage = 4;
-
                 var items = line.split(",");
-
             if (lineNo < deviceCount) {
-              gDaysToShip.push([items[kProductType], Number(items[kAvgDaysToShip])]);
+              gDaysToShip.push([items[kProductType], Number(items[kAvgDaysToShip])]);  //we need to sort days from high to low (or vice versa, depending on how Highcharts will plot them)
             }
             gNumSold.push([items[kProductType], items[kYear], Number(items[kNumSold])]);
             window.gPercentReturned.push([items[kProductType], items[kYear], Number(items[kReturnedOnAverage])])
-
-
             totalCount += parseFloat(items[kNumSold])
             totalReturned += parseFloat(items[kNumSold]) * parseFloat(items[kReturnedOnAverage])
             if ((lineNo + 1) % deviceCount == 0) {
@@ -59,12 +145,33 @@
               totalCount = 0;
               totalReturned = 0;
             }
+            options.xAxis.categories.push(items[0]);
           });
-
           console.log(gPercentReturned)
+        }).done (function() {       //need 'done' in order to start the drawing only after data processing is done
 
-        });
+            
+            var chartThreeData = {
+           // name: 'shipping time',
+            data: gDaysToShip,
+            color: "#1F77B4",
+            index: 0,
+            legendIndex: 0
+          };
+
+          chartThree.series.push(chartThreeData);
+
+          chartThree = jQuery.extend(true, {}, options, chartThree);
+          
+          new Highcharts.Chart('chart-three-container', chartThree);
+ 
+
+
+        })
+
+      });
+
       </script>
-    </div>
+
   </body>
 </html>
