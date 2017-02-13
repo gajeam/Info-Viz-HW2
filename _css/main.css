@@ -82,18 +82,18 @@ p {
     background-color: #eeeeee;
     display: inline-block;
     border-style:solid;
-    margin-bottom: 1vh;
-    width:49.5vw;
+    margin-bottom: .5vh;
+    width:49.75vw;
 }
 
 
  #chart-one-container {
     float: left;
-    height:65vh;
+    height:70.5vh;
 }
 
  #chart-two-container, #chart-three-container {
     float: right;
-    height:32vh;
+    height:35vh;
 }
 

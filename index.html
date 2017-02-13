@@ -38,13 +38,18 @@
               fontFamily: "Helvetica,Arial,sans-serif"
             }
           },
-          // legend: {
-          //   borderRadius: 0,
-          //   itemStyle: {
-          //     color: "#000000",
-          //     fontFamily: "Helvetica,Arial,sans-serif"
-          //   }
-          // },
+          legend: {
+            backgroundColor: 'white',
+            borderWidth: 1,
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            floating: true,
+            x: 45,
+            y: 30,
+            itemMarginTop: 2,
+            // itemMarginBottom: 5
+          },
           title: {
             style: {
               color: "#000000",
@@ -181,11 +186,6 @@
 
 
       }).done (function() {       //need 'done' in order to start the drawing only after data processing is done            
-          // First, get the device names in alphabetical order with "Other" at the end
-          alphabetizedDevices = gDeviceTypes
-          alphabetizedDevices.splice(alphabetizedDevices.indexOf("Other"), 1)
-          alphabetizedDevices.sort()
-          alphabetizedDevices.push("Other")
 
           // CHART #1
           var chartOne = {
@@ -194,7 +194,7 @@
               type: 'line',
             },
             title: {
-              text: "Annual Sales Per Year and Device",
+              text: "Smart Device Annual Sales",
             },
             xAxis: {
               name: "Year",
@@ -217,17 +217,17 @@
           chartOneData = {
             data: gNumSold[i],
             name: gDeviceTypes[i],
-            legendIndex:alphabetizedDevices.indexOf(gDeviceTypes[i])
+            legendIndex:gDeviceTypes.indexOf(gDeviceTypes[i])
           }
           chartOne.series.push(chartOneData);
         }
         new Highcharts.Chart('chart-one-container', chartOne);
-
+        console.log(gNumSold[0])
 
         // CHART #2
 
         // Add the "Average" line in
-        alphabetizedDevices.push("Average")
+        gDeviceTypes.push("Average")
 
         var chartTwo = {
           chart: {
@@ -259,16 +259,15 @@
           series: [],
         };
 
-        for (i = 0; i < alphabetizedDevices.length; i++) {
+        for (i = 0; i < gDeviceTypes.length; i++) {
           lineColor = 'rgba(200, 200, 200, 0.30)'
-          if (i == alphabetizedDevices.length - 1) {
+          if (i == gDeviceTypes.length - 1) {
             lineColor = "#FF0000";
           }
 
           chartTwoData = {
             data: gPercentReturned[i],
             name: gDeviceTypes[i],
-            legendIndex:alphabetizedDevices.indexOf(gDeviceTypes[i]),
             showInLegend: false,
             color: lineColor,
 
@@ -287,7 +286,7 @@
             type: 'bar'
           },
           title: {
-            text: "Shipping Time"
+            text: "Average Shipping Time (2013 - 2016)"
           },
           yAxis: {
             title: {
