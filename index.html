@@ -247,7 +247,9 @@
             chartTwoData = {
               data: gPercentReturned[i],
               name: gDeviceTypes[i],
-              legendIndex:alphabetizedDevices.indexOf(gDeviceTypes[i])
+              legendIndex:alphabetizedDevices.indexOf(gDeviceTypes[i]),
+              showInLegend: false,
+
             }
             chartTwo.series.push(chartTwoData);
           }

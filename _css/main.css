@@ -76,40 +76,25 @@ p {
 #wrapper {
 	text-align: center;
 	width: 100%;
-	margin-top: 30px;
+/*	margin-top: 30px;
+*/}
+
+.chart {
+    background-color: #eeeeee;
+    display: inline-block;
+    margin:.5vw;
 }
 
-/*.chart {
-    display: inline-block;
-    margin: 50px;
-}
-*/
 
  #chart-one-container {
-
-    position: absolute;
-    left: 97px;
-    display: inline-block;
-    margin: 10px;
-    width: 600px;
-    height: 550px;
+    float: left;
+    width:48vw;
+    height:57vw;
 }
 
- #chart-two-container {
-	position: absolute;
+ #chart-two-container, #chart-three-container {
     float: right;
-    display: inline-block;
-    margin: 10px;
-    width: 600px;
-    height: 300px;
+    width:48vw;
+    height:28vw;
 }
 
- #chart-three-container {
-    position: absolute;
-    float: right;
-    display: inline-block;
-    bottom: 0;
-    margin: 10px;
-    width: 600px;
-    height: 250px;
-}
