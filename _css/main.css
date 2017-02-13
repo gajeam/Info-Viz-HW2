@@ -82,19 +82,18 @@ p {
 .chart {
     background-color: #eeeeee;
     display: inline-block;
-    margin:.5vw;
+    border-style:solid;
+    width:50vw;
 }
 
 
  #chart-one-container {
     float: left;
-    width:48vw;
-    height:57vw;
+    height:56vh;
 }
 
  #chart-two-container, #chart-three-container {
     float: right;
-    width:48vw;
-    height:28vw;
+    height:28vh;
 }
 
