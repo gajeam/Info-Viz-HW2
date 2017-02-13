@@ -89,11 +89,11 @@ p {
 
  #chart-one-container {
     float: left;
-    height:57vh;
+    height:65vh;
 }
 
  #chart-two-container, #chart-three-container {
     float: right;
-    height:28vh;
+    height:32vh;
 }
 
