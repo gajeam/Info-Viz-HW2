@@ -104,23 +104,6 @@
         
       };
 
-//CONFIGURING CHART THREE - a bar chart showing days to ship
-      var chartThree = {
-        chart: {
-          renderTo: 'chart-three-container',
-          type: 'bar'
-        },
-        title: {
-          text: "Shipping Time"
-        },
-        yAxis: {
-          title: {
-            text: "Days",
-          },
-        },
-        series: [] // This series data is pulled through a for loop that loops through the CSV.
-      };
-
 
         $.get("_data/smartdevices.csv", function (data) {
           gDeviceTypes = [];
@@ -272,12 +255,31 @@
 
 
           // CHART #3
+
+
+          var chartThree = {
+            chart: {
+              renderTo: 'chart-three-container',
+              type: 'bar'
+            },
+            title: {
+              text: "Shipping Time"
+            },
+            yAxis: {
+              title: {
+                text: "Days",
+              },
+            },
+            series: [], // This series data is pulled through a for loop that loops through the CSV.
+          };
+
           var chartThreeData = {
            // name: 'shipping time',
             data: gDaysToShip,
-            color: "#1F77B4",
-            index: 0,
-            legendIndex: 0,
+            //color: "black",
+            //index: 0,
+            //legendIndex: false,
+
             showInLegend: false,
           };
 

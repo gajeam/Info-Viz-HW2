@@ -79,12 +79,37 @@ p {
 	margin-top: 30px;
 }
 
-.chart {
+/*.chart {
     display: inline-block;
     margin: 50px;
 }
+*/
+
+ #chart-one-container {
+
+    position: absolute;
+    left: 97px;
+    display: inline-block;
+    margin: 10px;
+    width: 600px;
+    height: 550px;
+}
+
+ #chart-two-container {
+	position: absolute;
+    float: right;
+    display: inline-block;
+    margin: 10px;
+    width: 600px;
+    height: 300px;
+}
 
  #chart-three-container {
-    width: 400px;
-    height: 300px;
+    position: absolute;
+    float: right;
+    display: inline-block;
+    bottom: 0;
+    margin: 10px;
+    width: 600px;
+    height: 250px;
 }
