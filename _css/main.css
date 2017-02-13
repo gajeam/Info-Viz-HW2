@@ -76,20 +76,20 @@ p {
 #wrapper {
 	text-align: center;
 	width: 100%;
-/*	margin-top: 30px;
-*/}
+}
 
 .chart {
     background-color: #eeeeee;
     display: inline-block;
     border-style:solid;
+    margin-bottom: 1vh;
     width:49.5vw;
 }
 
 
  #chart-one-container {
     float: left;
-    height:56vh;
+    height:57vh;
 }
 
  #chart-two-container, #chart-three-container {
